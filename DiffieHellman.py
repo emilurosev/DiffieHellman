@@ -62,7 +62,7 @@ class DiffieHellman:
         return pow(self.g, self.__e, self.p)
 
     def checkPublicKey(self, other_key):
-        # proverava da li je Legendre simbol == 1, po standardu RFC 3562
+        # proverava da li je Legendre simbol == 1, po standardu RFC 3526
         if other_key > 2 and other_key < self.p - 1:
             if pow(other_key, (self.p - 1)//2, self.p) == 1:
                 return True
