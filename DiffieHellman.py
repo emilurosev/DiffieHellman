@@ -11,11 +11,17 @@ except (AttributeError, ImportError):
 	random_function = OpenSSL.rand.bytes
 	random_provider = "OpenSSL"
 
-print(random_provider)
+print(f'Koriscena secure random funkcija je {random_provider}')
+print('\n')
 
 
 class DiffieHellman:
-    def __init__(self, generator=2, group=17, key_length=600):
+    def __init__(self, rand_function=random_function, generator=2, group=17, key_length=600, name='Alice'):
+        self.name = name
+
+        # definisanje pseudo random generatora
+        self.random_function = rand_function
+
         # definisanje duzine kljuca
         min_key_length = 200
         self.key_length = max(min_key_length, key_length)
@@ -47,9 +53,9 @@ class DiffieHellman:
         _bytes = self.key_length // 8 + 8 
         
         try:
-            priv_key = int.from_bytes(random_function(_bytes), byteorder='big')
+            priv_key = int.from_bytes(self.random_function(_bytes), byteorder='big')
         except:
-            priv_key = int(OpenSSL.rand.byes(_bytes).encode('hex'), 16)
+            priv_key = int(OpenSSL.rand.bytes(_bytes).encode('hex'), 16)
 
         return priv_key
 
@@ -91,8 +97,8 @@ class DiffieHellman:
 
 
     def __showResults(self, shared_secret):
-        print('Results:')
-        print(f'Shared secret is {shared_secret.bit_length()} bits number: {shared_secret}')
+        print(f'{self.name} rezultat:')
+        print(f'Deljena tajna je {shared_secret.bit_length()}-bitni broj: {shared_secret}')
 
 
     def getPublicKey(self):
