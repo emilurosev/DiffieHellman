@@ -15,3 +15,4 @@ if a_key == b_key:
     print(hexlify(a_key))
     print(f'duzina kljuca je {len(a_key)} bajta')
 
+

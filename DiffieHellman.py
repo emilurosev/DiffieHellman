@@ -15,14 +15,10 @@ print(random_provider)
 
 
 class DiffieHellman:
-    def __init__(self, generator=2, group=17, key_length=540):
+    def __init__(self, generator=2, group=17, key_length=600):
         # definisanje duzine kljuca
-        min_key_length = 180
-        if key_length < min_key_length:
-            print('key too small!')
-            self.key_length = min_key_length
-        else:
-            self.key_length = key_length
+        min_key_length = 200
+        self.key_length = max(min_key_length, key_length)
     
         # definisanje dh parametra g
         default_generator = 2
@@ -42,20 +38,20 @@ class DiffieHellman:
             self.p = PRIMES[default_group]
 
         # definisanje dh eksponenta e => private key
-        self.__e = self.__generatePrivateKey(key_length)
+        self.__e = self.__generatePrivateKey()
        
 
-    def __generatePrivateKey(self, bits):
-        _rand = 0
-        _bytes = bits // 8 + 8
+    def __generatePrivateKey(self):
+        # generise e preko kriptoloski sigurne random funkcije duzine self.key_length koja je gore definisana        
+        priv_key = 0
+        _bytes = self.key_length // 8 + 8 
+        
+        try:
+            priv_key = int.from_bytes(random_function(_bytes), byteorder='big')
+        except:
+            priv_key = int(OpenSSL.rand.byes(_bytes).encode('hex'), 16)
 
-        while _rand.bit_length() < bits:
-            try:
-                _rand = int.from_bytes(random_function(_bytes), byteorder='big')
-            except:
-                _rand = int(OpenSSL.rand.byes(_bytes).encode('hex'), 16)
-
-        return _rand
+        return priv_key
 
     def __generatePublicKey(self):
         # public key => g**e % p
