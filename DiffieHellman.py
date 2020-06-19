@@ -16,8 +16,7 @@ print('\n')
 
 
 class DiffieHellman:
-    def __init__(self, rand_function=random_function, generator=2, group=17, key_length=600, name='Alice'):
-        self.name = name
+    def __init__(self, rand_function=random_function, generator=2, group=17, key_length=600):
 
         # definisanje pseudo random generatora
         self.random_function = rand_function
@@ -97,7 +96,6 @@ class DiffieHellman:
 
 
     def __showResults(self, shared_secret):
-        print(f'{self.name} rezultat:')
         print(f'Deljena tajna je {shared_secret.bit_length()}-bitni broj: {shared_secret}')
 
 

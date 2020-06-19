@@ -3,17 +3,19 @@ from binascii import hexlify
 
 if __name__ == "__main__":
 
-    a = DiffieHellman(name='Alisa')
-    b = DiffieHellman(name='Bob')
+    alisa = DiffieHellman()
+    bob = DiffieHellman()
 
-    a_key = a.generateSharedKey(b.getPublicKey())
+    print('Alisa:')
+    alisa_key = alisa.generateSharedKey(bob.getPublicKey(), show_results=True)
     print('\n')
-    b_key = b.generateSharedKey(a.getPublicKey())
+    print('Bob:')
+    bob_key = bob.generateSharedKey(alisa.getPublicKey(), show_results=True)
 
     print('\n')
-    print(f'Kljucevi su isti: {a_key == b_key}')
+    print(f'Kljucevi su isti: {alisa_key == bob_key}')
     print('\n')
 
-    if a_key == b_key:
-        print(f'Kljuc koji se moze koristiti za AES sifru: {hexlify(a_key)}')
-        print(f'Duzina kljuca je {len(a_key)*8} bitova')
+    if alisa_key == bob_key:
+        print(f'Kljuc koji se moze koristiti za AES sifru: {hexlify(alisa_key)}')
+        print(f'Duzina kljuca je {len(alisa_key)*8} bitova')
